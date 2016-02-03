@@ -1,0 +1,17 @@
+{
+    "name": "react-cropper",
+    "description": "Cropper as React components",
+    "repos": "https://github.com/roadmanfong/react-cropper.git",
+    "main": "react-cropper.js",
+    "tag": "master",
+    "reposType": "npm",
+    "dependencies": {
+        "cropper": "^2.2.5",
+        "react": "^0.14.0",
+        "jquery": "^1.11.3 || ^2.1.4"
+    },
+    "paths": {
+        "dist": "."
+    },
+    "version": "0.5.2"
+}
