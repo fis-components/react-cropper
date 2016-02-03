@@ -12,16 +12,18 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _jquery = require('jquery');
+var _cropperjs = require('cropperjs');
 
-var _jquery2 = _interopRequireDefault(_jquery);
+var _cropperjs2 = _interopRequireDefault(_cropperjs);
 
-require('cropper');
+require('cropperjs/dist/cropper.css');
 
-require('cropper/dist/cropper.css');
+var _reactDom = require('react-dom');
 
-var Cropper = _react2['default'].createClass({
-  displayName: 'Cropper',
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var ReactCropper = _react2['default'].createClass({
+  displayName: 'ReactCropper',
 
   propTypes: {
     // react cropper options
@@ -73,19 +75,23 @@ var Cropper = _react2['default'].createClass({
   },
 
   componentDidMount: function componentDidMount() {
+    console.log('componentDidMount');
     var options = {};
     for (var prop in this.props) {
       if (prop !== 'src' && prop !== 'alt' && prop !== 'crossOrigin') {
         options[prop] = this.props[prop];
       }
     }
-    this.$img = (0, _jquery2['default'])(this.refs.img);
-    this.$img.cropper(options);
+    this.img = _reactDom2['default'].findDOMNode(this.refs.img);
+    console.log('options');
+    console.log(options);
+    this.cropper = new _cropperjs2['default'](this.img, options);
   },
 
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps');
     if (nextProps.src !== this.props.src) {
-      this.replace(nextProps.src);
+      this.cropper.reset().clear().replace(nextProps.src);
     }
     if (nextProps.aspectRatio !== this.props.aspectRatio) {
       this.setAspectRatio(nextProps.aspectRatio);
@@ -93,88 +99,93 @@ var Cropper = _react2['default'].createClass({
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    if (this.$img) {
+    console.log('componentWillUnmount');
+    if (this.img) {
       // Destroy the cropper, this makes sure events such as resize are cleaned up and do not leak
-      this.$img.cropper('destroy');
-      // While we're at it remove our reference to the jQuery instance
-      delete this.$img;
+      this.cropper.destroy();
+      delete this.img;
+      delete this.cropper;
     }
   },
 
+  crop: function crop() {
+    return this.cropper.crop;
+  },
+
   move: function move(offsetX, offsetY) {
-    return this.$img.cropper('move', offsetX, offsetY);
+    return this.cropper.move(offsetX, offsetY);
   },
 
   zoom: function zoom(ratio) {
-    return this.$img.cropper('zoom', ratio);
+    return this.cropper.zoom(ratio);
   },
 
   rotate: function rotate(degree) {
-    return this.$img.cropper('rotate', degree);
+    return this.cropper.rotate(degree);
   },
 
   enable: function enable() {
-    return this.$img.cropper('enable');
+    return this.cropper.enable();
   },
 
   disable: function disable() {
-    return this.$img.cropper('disable');
+    return this.cropper.disable();
   },
 
   reset: function reset() {
-    return this.$img.cropper('reset');
+    return this.cropper.reset();
   },
 
   clear: function clear() {
-    return this.$img.cropper('clear');
+    return this.cropper.clear();
   },
 
   replace: function replace(url) {
-    return this.$img.cropper('replace', url);
+    return this.cropper.replace(url);
   },
 
   getData: function getData(rounded) {
-    return this.$img.cropper('getData', rounded);
+    return this.cropper.getData(rounded);
+  },
+
+  setData: function setData(data) {
+    return this.cropper.setData(data);
   },
 
   getContainerData: function getContainerData() {
-    return this.$img.cropper('getContainerData');
+    return this.cropper.getContainerData();
   },
 
   getImageData: function getImageData() {
-    return this.$img.cropper('getImageData');
+    return this.cropper.getImageData();
   },
 
   getCanvasData: function getCanvasData() {
-    return this.$img.cropper('getCanvasData');
+    return this.cropper.getCanvasData();
   },
 
   setCanvasData: function setCanvasData(data) {
-    return this.$img.cropper('setCanvasData', data);
+    return this.cropper.setCanvasData(data);
   },
 
   getCropBoxData: function getCropBoxData() {
-    return this.$img.cropper('getCropBoxData');
+    return this.cropper.getCropBoxData();
   },
 
   setCropBoxData: function setCropBoxData(data) {
-    return this.$img.cropper('setCropBoxData', data);
+    return this.cropper.setCropBoxData(data);
   },
 
   getCroppedCanvas: function getCroppedCanvas(options) {
-    return this.$img.cropper('getCroppedCanvas', options);
+    return this.cropper.getCroppedCanvas(options);
   },
 
   setAspectRatio: function setAspectRatio(aspectRatio) {
-    return this.$img.cropper('setAspectRatio', aspectRatio);
+    return this.cropper.setAspectRatio(aspectRatio);
   },
 
   setDragMode: function setDragMode() {
-    return this.$img.cropper('setDragMode');
-  },
-
-  on: function on(eventname, callback) {
-    return this.$img.on(eventname, callback);
+    return this.cropper.setDragMode();
   },
 
   render: function render() {
@@ -192,5 +203,5 @@ var Cropper = _react2['default'].createClass({
   }
 });
 
-exports['default'] = Cropper;
+exports['default'] = ReactCropper;
 module.exports = exports['default'];

@@ -6,12 +6,12 @@
     "tag": "master",
     "reposType": "npm",
     "dependencies": {
-        "cropper": "^2.2.5",
-        "react": "^0.14.0",
-        "jquery": "^1.11.3 || ^2.1.4"
+        "cropperjs": "^0.5.0",
+        "react-dom": "^0.14.3",
+        "react": "^0.14.0"
     },
     "paths": {
         "dist": "."
     },
-    "version": "0.5.2"
+    "version": "0.6.0"
 }
